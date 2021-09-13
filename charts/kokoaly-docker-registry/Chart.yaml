@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kokoaly-docker-registry
+description: Private Docker Registry with Redis cache, S3 backend storage, ALB ingress and Kubernetes External Secrets integation
+type: application
+version: 0.1.0
+appVersion: 0.1.0

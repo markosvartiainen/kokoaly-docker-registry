@@ -1,0 +1,60 @@
+
+#Docker registry configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: docker-registry
+  namespace: kokoaly-docker-registry
+  labels:
+    app: registry
+data:
+  registry-config.yml: |
+    version: 0.1
+    log:
+      fields:
+        service: registry
+    storage:
+      cache:
+        blobdescriptor: redis
+      s3:
+        region: {{ .Values.dockerregistry.awsregion }}
+        bucket: kokoaly-docker-registry
+      delete:
+        enabled: true
+    redis:
+      addr: redis-main:6379
+    http:
+      addr: :5000
+      headers:
+        X-Content-Type-Options: [nosniff]
+    auth:
+      htpasswd:
+        realm: basic-realm
+        path: /auth/htpasswd
+    health:
+      storagedriver:
+        enabled: true
+        interval: 10s
+        threshold: 3
+---
+## Docker Registry Pruner config is loaded here
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: docker-registry-pruner-configmap
+  namespace: kokoaly-docker-registry
+  labels:
+    app: docker-registry-pruner
+data:
+  docker-registry-config.yml: |
+    registry: http://docker-registry:5000
+    username: {{ .Values.dockerregistry.username }}
+    password: {{ .Values.dockerregistry.password }}
+    parallel_workers: 10
+    rules:
+      - repos:
+        - app/jmeter
+        keep_recent: 5
+      - repos:
+        - app/calculator
+        keep_recent: 10

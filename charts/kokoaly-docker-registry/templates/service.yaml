@@ -1,0 +1,31 @@
+## Redis service
+kind: Service
+apiVersion: v1
+metadata:
+  name: redis
+  namespace: kokoaly-docker-registry
+  labels:
+    app: redis
+spec:
+  selector:
+    app: redis
+  ports:
+  - name: http
+    port: 6379
+    targetPort: 6379
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: docker-registry
+  namespace: kokoaly-docker-registry
+  labels:
+    app: registry
+spec:
+  type: ClusterIP
+  selector:
+    app: docker-registry
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 5000

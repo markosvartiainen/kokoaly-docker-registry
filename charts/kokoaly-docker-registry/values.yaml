@@ -1,0 +1,11 @@
+# serviceAccount:
+#   create: true
+#   name: "kokoaly-docker-registry"
+
+dockerregistry:
+  dns: docker-registry.kokoaly.fi
+  email: marko.s.vartinen@outlook.com
+  storage: 20Gi
+  awsacmarn: arn:aws:acm:eu-west-1:545089799672:certificate/a3a5311a-06ef-4750-aa76-fbec4b834f43
+  ssmparameterhtpasswd: /dev/docker-registry/htpasswd
+  awsregion: eu-west-1

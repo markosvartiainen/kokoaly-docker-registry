@@ -1,0 +1,74 @@
+# Redis deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-main
+  namespace: kokoaly-docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - image: redis:6.2.5
+          name: main
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: redisdata
+              mountPath: /data
+              subPath: redisdata
+      volumes:
+        - name: redisdata
+          persistentVolumeClaim:
+            claimName: redisdata
+---
+# Docker registry deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry
+  namespace: kokoaly-docker-registry
+  labels:
+    app: registry
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: docker-registry
+  template:
+    metadata:
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+        - name: docker-registry
+          image: registry:2.7.1
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http
+            containerPort: 5000
+          volumeMounts:
+          - name: config
+            mountPath: /etc/docker/registry
+            readOnly: true
+          - name: htpasswd
+            mountPath: /auth
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: docker-registry
+            items:
+              - key: registry-config.yml
+                path: config.yml
+        - name: htpasswd
+          secret:
+            secretName: docker-registry
+            items:
+            - key: docker-registry-htpasswd
+              path: htpasswd

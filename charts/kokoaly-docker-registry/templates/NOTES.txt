@@ -1,0 +1,6 @@
+1. Docker registry can be accessed with following commands.
+
+  curl -v -u <username>:<password> https://docker-registry.kokoaly.fi/v2/_catalog
+  or 
+  docker login https://docker-registry.kokoaly.fi
+
