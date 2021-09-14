@@ -6,6 +6,8 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ip-address-type: ipv4
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.dockerregistry.awsacmarn }}
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=360
@@ -16,7 +18,7 @@ metadata:
 spec:
   rules:
   - host: {{ .Values.dockerregistry.dns }}
-  -  http:
+  - http:
       paths:
         - path: /
           pathType: Prefix
@@ -25,4 +27,3 @@ spec:
               name: docker-registry
               port: 
                 number: 5000
- 
