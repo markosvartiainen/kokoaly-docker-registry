@@ -36,25 +36,4 @@ data:
         enabled: true
         interval: 10s
         threshold: 3
----
-## Docker Registry Pruner config is loaded here
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: docker-registry-pruner-configmap
-  namespace: kokoaly-docker-registry
-  labels:
-    app: docker-registry-pruner
-data:
-  docker-registry-config.yml: |
-    registry: http://docker-registry:5000
-    username: {{ .Values.dockerregistry.username }}
-    password: {{ .Values.dockerregistry.password }}
-    parallel_workers: 10
-    rules:
-      - repos:
-        - app/jmeter
-        keep_recent: 5
-      - repos:
-        - app/calculator
-        keep_recent: 10
+
