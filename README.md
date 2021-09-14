@@ -24,8 +24,8 @@ $ helm delete kokoaly-docker-registry
 
 ## Future enchancements
 * LucidChart diagram of the deployed service
-* Use Kubernetes service account
-* Static code analysis [Checkov](https://github.com/bridgecrewio/checkov)
+* Enable [IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)
+* Enable [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for Kubernetes policy management.
 * HA solution for Redis using Kubernetes or integrate with [Amazon ElastiCache for Redis](https://aws.amazon.com/redis)
 * Refactor Helm chart without static configurations
 * Proper authentication to private Docker Registry

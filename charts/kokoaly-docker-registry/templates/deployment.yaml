@@ -14,18 +14,46 @@ spec:
       labels:
         app: redis
     spec:
+      automountServiceAccountToken: false
       containers:
         - image: redis:6.2.5
           name: main
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           imagePullPolicy: Always
           volumeMounts:
             - name: redisdata
               mountPath: /data
               subPath: redisdata
+          ports:
+            - containerPort: 6379
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 1                    
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 10                  
       volumes:
         - name: redisdata
           persistentVolumeClaim:
             claimName: redisdata
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
 ---
 # Docker registry deployment
 apiVersion: apps/v1
@@ -45,10 +73,23 @@ spec:
       labels:
         app: docker-registry
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: docker-registry
           image: registry:2.7.1
-          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          imagePullPolicy: Always
           ports:
           - name: http
             containerPort: 5000
@@ -59,6 +100,21 @@ spec:
           - name: htpasswd
             mountPath: /auth
             readOnly: true
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 1                    
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 10                  
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        runAsNonRoot: true
+        fsGroup: 10001
       volumes:
         - name: config
           configMap:
