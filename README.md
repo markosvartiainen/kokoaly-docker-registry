@@ -24,8 +24,11 @@ $ helm delete kokoaly-docker-registry
 
 ## Future enchancements
 * LucidChart diagram of the deployed service
-* Use service account
+* Use Kubernetes service account
 * Static code analysis [Checkov](https://github.com/bridgecrewio/checkov)
-* HA solution for Redis using Kubernetes or integrate with [Amazon ElastiCache for Redis](https://aws.amazon.com/redis) 
+* HA solution for Redis using Kubernetes or integrate with [Amazon ElastiCache for Redis](https://aws.amazon.com/redis)
+* Refactor Helm chart without static configurations
+* Proper authentication to private Docker Registry
+* Example Terraform to deploy underlying infrastructure
 
     
