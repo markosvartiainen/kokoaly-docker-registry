@@ -23,12 +23,16 @@ $ helm delete kokoaly-docker-registry
 ```
 
 ## Future enchancements
-* LucidChart diagram of the deployed service
+* Configure Kubernetes Service Accounts, roles and role bindings. 
 * Enable [IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)
-* Enable [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper) for Kubernetes policy management.
-* HA solution for Redis using Kubernetes or integrate with [Amazon ElastiCache for Redis](https://aws.amazon.com/redis)
+* Enable [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper) or similar for Kubernetes policy management.
+* Stateful HA solution for Redis using Kubernetes or integrate with [Amazon ElastiCache for Redis](https://aws.amazon.com/redis)
 * Refactor Helm chart without static configurations
-* Proper authentication to private Docker Registry
 * Example Terraform to deploy underlying infrastructure
+* [Docker Registry Token Authentication](https://docs.docker.com/registry/spec/auth/)
+* AWS CloudFront as CDN
+* Manage EKS deployments with ArgoCD in GitOps way.
+* Enable [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+* Enable [EKS logging with fluentd-bit](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html)
 
     
